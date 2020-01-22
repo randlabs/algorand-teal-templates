@@ -28,11 +28,8 @@ import (
 	"io/ioutil"
 	"os"
 
-	// "github.com/algorand/go-algorand/data/basics"
 	"github.com/algorand/go-algorand/crypto"
-	// "github.com/algorand/go-algorand/data/transactions"
 	"github.com/algorand/go-algorand/data/transactions/logic"
-	// "github.com/algorand/go-algorand/protocol"
 )
 
 func failFast(err error) {
@@ -68,31 +65,12 @@ func main() {
 	// message
 	datastr := []byte(os.Args[3])
 
-	// datastr, err := ioutil.ReadFile(os.Args[3])
-	// failFast(err)
-
 	fmt.Fprintf(os.Stdout, "Data String:\n Ascii: %s\nBase64: %s\nHex: %s\n\n", datastr, base64.StdEncoding.EncodeToString(datastr), hex.Dump(datastr))
 
-	// datastr := []byte("1")
-	// fmt.Fprintf(os.Stdout, "%s\n%s\n", datastr, base64.StdEncoding.EncodeToString(datastr))
-
-	//dsig := sec.SignBytes(datastr)
-	// for (data A, signature B, pubkey C) verify the signature of (“ProgData” || program_hash || data) against the pubkey => {0 or 1}
-
 	program1str := fmt.Sprintf("%s", pdata)
-	// fmt.Fprintf(os.Stdout, "Program string from file:\n%s\n", program1str)
 
 	program1, err := logic.AssembleString(program1str)
 	failFast(err)
-
-	// program2, err := logic.AssembleString(fmt.Sprintf(`arg 0
-	// arg 1
-	// addr SVDICE2QVOMQPYCYRJGRBOZPLYGF5DQOK3FFHL26FUOBQLWBKDH3EAQS3U
-	// ed25519verify`))
-	// failFast(err)
-
-	// fmt.Fprintf(os.Stdout, "Program File:\n%s\n", program1)
-	// fmt.Fprintf(os.Stdout, "Program Mem:\n%s\n", program2)
 
 	dsig := sec.Sign(logic.Msg{
 		ProgramHash: crypto.HashObj(logic.Program(program1)),
@@ -100,20 +78,4 @@ func main() {
 	})
 
 	fmt.Fprintf(os.Stdout, "Signature base64 program from file: %s\n", base64.StdEncoding.EncodeToString(dsig[:]))
-
-	// dsig2 := sec.Sign(logic.Msg{
-	// 	ProgramHash: crypto.HashObj(logic.Program(program2)),
-	// 	Data:        datastr,
-	// })
-
-	// fmt.Fprintf(os.Stdout, "Signature base64 program from code: %s\n", base64.StdEncoding.EncodeToString(dsig2[:]))
-
-	// if (sec.Verify(logic.Msg{
-	// 	ProgramHash: crypto.HashObj(logic.Program(program1)),
-	// 	Data:        datastr,
-	// }, dsig)) {
-	// 	fmt.Fprintf(os.Stdout, "Verified\n")
-	// } else {
-	// 	fmt.Fprintf(os.Stdout, "Not verified\n")
-	// }
 }
