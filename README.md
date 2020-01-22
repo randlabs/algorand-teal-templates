@@ -1,0 +1,1 @@
+# algorand-teal-templates
