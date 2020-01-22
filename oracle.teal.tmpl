@@ -7,7 +7,7 @@
 // while the other says '1' will happen (team B wins)
 // I did not code what will happen if none of these possibilities happen (e.g.: the oracle does not sign any message)
 // In that case, half of the algos should go to each address after a specific round. There is an example 'split' that addresses something 
-// similar that could be used to finish this example.
+// similar that could be used to address this possibility.
 //
 //
 // Program flow:
@@ -19,11 +19,11 @@
 //  - TMPL_ADDRA: Address beting for Team A. 
 //  - TMPL_ADDRB: Address beting for Team B. 
 //  - TMPL_ADDR_ORACLE: Oracle Address. 
-//  - TMPL_FEE: maximum fee used by the limit order transaction
+//  - TMPL_FEE: maximum fee used by the limit order transaction.
 
 
 txn TypeEnum
-int 1 // Payment 
+int 1 // Payment (either Algos-out in trade or Algos redeemed at timeout)
 ==
 
 global GroupSize
@@ -33,7 +33,7 @@ int 1
 
 // if arg 0 == 0 then send to TMPL_ADDRA
 arg 0
-int 0
+byte base64 MA==
 ==
 
 txn CloseRemainderTo
@@ -48,7 +48,7 @@ addr TMPL_ADDRA
 
 // if arg 0 == 1 then send to TMPL_ADDRB
 arg 0
-int 1
+byte base64 MQ==
 ==
 
 txn CloseRemainderTo
@@ -65,7 +65,7 @@ addr TMPL_ADDRB
 &&
 
 txn Fee
-TMPL_FEE
+int TMPL_FEE
 <=
 &&
 
