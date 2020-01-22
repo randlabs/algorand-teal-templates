@@ -11,32 +11,15 @@
 //
 //
 // Program flow:
-// If the oracle () signs a message with '0' 
+// If the oracle signs a message with '0' 
 // the algos go to TMPL_ADDRA
 // If the oracle signs a '1' the algos go to TMPL_ADDRB
-// Algos you're willing to trade for some other asset.
-//
-// Works on two cases:
-// * trading Algos for some other asset
-// * closing out Algos back to the originator after a timeout
-//
-// trade case, a 2 transaction group:
-// gtxn[0] (this txn) Algos from Me to Other
-// gtxn[1] asset from Other to Me
-//
-// We want to get _at least_ some amount of the other asset per our Algos
-// gtxn[1].AssetAmount / gtxn[0].Amount >= N / D
-// ===
-// gtxn[1].AssetAmount * D >= gtxn[0].Amount * N
-//
-// close-out case:
-// txn alone, close out value after timeout
 //
 // Parameters:
 //  - TMPL_ADDRA: Address beting for Team A. BKJX2U52PKL27XS42VO4SJW5BBFBYDCN7NYAW6BUEKF7EBYX5XV5CKAPT4
 //  - TMPL_ADDRB: Address beting for Team B. 36WZVNA6YA77V2MGGLJBT2YQG3RQVX6UWJ3P6E7FWNAV4IGMK3ZVVNBLVQ
 //  - TMPL_ADDR_ORACLE: Oracle Address. SVDICE2QVOMQPYCYRJGRBOZPLYGF5DQOK3FFHL26FUOBQLWBKDH3EAQS3U
-//  - TMPL_FEE: maximum fee used by the limit order transaction
+//  - TMPL_FEE: maximum fee used by the limit order transaction. 10000
 
 
 txn TypeEnum
