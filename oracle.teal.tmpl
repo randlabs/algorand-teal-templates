@@ -1,0 +1,94 @@
+// Oracle Example
+//
+// Author: Pablo Yabo
+//
+//
+// It is a way to illustrate a bet between 2 addresses. One says that '0' will happen (team A wins)
+// while the other says '1' will happen (team B wins)
+// I did not code what will happen if none of these possibilities happen (e.g.: the oracle does not sign any message)
+// In that case, half of the algos should go to each address after a specific round. There is an example 'split' that addresses something 
+// similar that could be used to finish this example.
+//
+//
+// Program flow:
+// If the oracle () signs a message with '0' 
+// the algos go to TMPL_ADDRA
+// If the oracle signs a '1' the algos go to TMPL_ADDRB
+// Algos you're willing to trade for some other asset.
+//
+// Works on two cases:
+// * trading Algos for some other asset
+// * closing out Algos back to the originator after a timeout
+//
+// trade case, a 2 transaction group:
+// gtxn[0] (this txn) Algos from Me to Other
+// gtxn[1] asset from Other to Me
+//
+// We want to get _at least_ some amount of the other asset per our Algos
+// gtxn[1].AssetAmount / gtxn[0].Amount >= N / D
+// ===
+// gtxn[1].AssetAmount * D >= gtxn[0].Amount * N
+//
+// close-out case:
+// txn alone, close out value after timeout
+//
+// Parameters:
+//  - TMPL_ADDRA: Address beting for Team A. 
+//  - TMPL_ADDRB: Address beting for Team B. 
+//  - TMPL_ADDR_ORACLE: Oracle Address. 
+//  - TMPL_FEE: maximum fee used by the limit order transaction
+
+
+txn TypeEnum
+int 1 // Payment (either Algos-out in trade or Algos redeemed at timeout)
+==
+
+global GroupSize
+int 1
+==
+&&
+
+// if arg 0 == 0 then send to TMPL_ADDRA
+arg 0
+int 0
+==
+
+txn CloseRemainderTo
+addr TMPL_ADDRA
+==
+&&
+
+txn Receiver
+addr TMPL_ADDRA
+==
+&&
+
+// if arg 0 == 1 then send to TMPL_ADDRB
+arg 0
+int 1
+==
+
+txn CloseRemainderTo
+addr TMPL_ADDRB
+==
+&&
+
+txn Receiver
+addr TMPL_ADDRB
+==
+&&
+||
+// global verifications
+&&
+
+txn Fee
+TMPL_FEE
+<=
+&&
+
+// verify oracle signature
+arg 0
+arg 1
+addr TMPL_ADDR_ORACLE
+ed25519verify
+&&
