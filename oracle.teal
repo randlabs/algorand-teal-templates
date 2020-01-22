@@ -32,9 +32,8 @@ int 1
 &&
 
 // if arg 0 == 0 then send to TMPL_ADDRA
-arg_0
-byte base64 MQ==
-
+arg 0
+byte base64 MA==
 ==
 
 txn CloseRemainderTo
@@ -49,7 +48,7 @@ addr BKJX2U52PKL27XS42VO4SJW5BBFBYDCN7NYAW6BUEKF7EBYX5XV5CKAPT4
 
 // if arg 0 == 1 then send to TMPL_ADDRB
 arg 0
-byte base64 MA==
+byte base64 MQ==
 ==
 
 txn CloseRemainderTo
